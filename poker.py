@@ -19,7 +19,6 @@ def is_ordered(ranks):
 def ncr(n, k):
 	return comb(n, k, exact = False)
 
-print(comb(5,2))
 
 def is_royalFlush(hand):
 	hand_ranks = [i[1] for i in hand]
@@ -122,13 +121,31 @@ straight_th = (ncr(10,1)*(ncr(4,1)**5) - ncr(10,1)*ncr(4,1))/freq_tot
 threeKind_th = ncr(13,1)*ncr(4,3)*ncr(12,2)*(ncr(4,1)**2)/freq_tot
 twoPair_th = ncr(13,2)*(ncr(4,2)**2)*ncr(11,1)*ncr(4,1)/freq_tot
 pair_th = ncr(13,1)*ncr(4,2)*ncr(12,3)*(ncr(4,2)**3)/freq_tot
+none_th = ((ncr(13,5) - 10)*((ncr(4,1)**5) - 4))/freq_tot
 
-n = 1e6
+n = 1e5
+
 iters = []
+nones = []
+nones_th = []
+pairs = []
+pairs_th = []
+twoPairs = []
+twoPairs_th = []
+threeKinds = []
+threeKinds_th = []
 flushes = []
 flushes_th = []
 straights = []
 straights_th = []
+houses = []
+houses_th = []
+fourKinds = []
+fourKinds_th = []
+sFlushes = []
+sFlushes_th = []
+rFlushes = []
+rFlushes_th = []
 
 start = time.clock()
 for i in range(int(n)):
@@ -155,22 +172,40 @@ for i in range(int(n)):
 		num_none += 1
 	
 	iters.append(float(i))
+	nones.append(num_none)
+	nones_th.append(float(i)*none_th)
+	pairs.append(num_pair)
+	pairs_th.append(float(i)*pair_th)
+	twoPairs.append(num_twoPair)
+	twoPairs_th.append(float(i)*twoPair_th)
+	threeKinds.append(num_threeKind)
+	threeKinds_th.append(float(i)*threeKind_th)
+	houses.append(num_fullHouse)
+	houses_th.append(float(i)*fullHouse_th)
+	fourKinds.append(num_fourKind)
+	fourKinds_th.append(float(i)*fourKind_th)
 	flushes.append(num_flush)
 	flushes_th.append(float(i)*flush_th)
 	straights.append(num_straight)
 	straights_th.append(float(i)*straight_th)
+	sFlushes.append(num_sFlush)
+	sFlushes_th.append(float(i)*sFlush_th)
+	rFlushes.append(num_rFlush)
+	rFlushes_th.append(float(i)*rFlush_th)
 
 end = time.clock()
 proc_t = end - start
 
-plt.plot(iters, straights, 'r', label = 'Actual')
-plt.plot(iters, straights_th, 'b', label = 'Theoretical')
-plt.legend()
-plt.xlabel('Iterations')
-plt.ylabel('Number of straights')
-plt.title("Straights")
-plt.savefig('straights.png', dpi = 300)
-plt.show()
+print(f"Dealing {n} hands took {proc_t} seconds!")
+
+print(f"len(iters) = {len(iters)}")
+fname = 'probabilites.txt'
+with open(fname, 'w') as out_file:
+	out_file.write("iters,none,pair,twoPair,threeKind,fullHouse,fourKind,straight,flush,sFlush,rFlush\n")
+	for i in range(len(iters)):
+		print(i)
+		out_file.write(str(iters[i]) + ',' + str(nones_th[i])+ ',' + str(pairs_th[i]) + ',' + str(twoPairs_th[i]) + ','+str(threeKinds_th[i]) + ',' + str(houses_th[i]) + ',' + str(fourKinds_th[i]) + ',' + str(straights_th[i]) + ',' + str(flushes_th[i]) + ',' + str(sFlushes_th[i]) + ',' + str(rFlushes_th[i]) + '\n')
+
 
 prob_rFlush = 100*num_rFlush/float(n)
 prob_sFlush = 100*num_sFlush/float(n)
@@ -183,23 +218,4 @@ prob_twoPair = 100*num_twoPair/float(n)
 prob_pair = 100*num_pair/float(n)
 prob_none = 100*num_none/float(n)
 
-'''
-print(f"Prob of no-good hands = {prob_none:.6f}")
-print(f"Prob of pairs = {prob_pair:.6f}")
-print(f"Prob of two pairs = {prob_twoPair:.6f}")
-print(f"Prob of Three of a Kinds = {prob_threeKind:.6f}")
-print(f"Prob of straights = {prob_straight:.6f}")	
-print(f"Prob of flushes = {prob_flush:.6f}")
-print(f"Prob of Full Houses = {prob_fullHouse:.6f}")
-print(f"Prob of Four of a Kinds = {prob_fourKind:.6f}")
-print(f"Prob of straight flushes = {prob_sFlush:.6f}")
-print(f"Prob of royal flushes = {prob_rFlush:.6f}")
-print(f"Dealing took {proc_t:.1f} seconds.")
-'''
-'''
-
-if is_fourKind(['CT', 'C4', 'D6', 'HT', 'DT']):
-	print("Four of a kind!!")
-else:
-	print("Nope, sorry")
-'''
+print("Done!")
