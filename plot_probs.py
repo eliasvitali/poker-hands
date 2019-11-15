@@ -2,9 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.special import comb
 
-def ncr(n, k):
-	return comb(n, k, exact = False)
-
 iters, nones, pairs, twoPairs, threeKinds, houses, fourKinds, straights, flushes, sFlushes, rFlushes = np.loadtxt('probabilites.txt', delimiter = ',', unpack = True, skiprows = 2)
 iters1, nones1, pairs1, twoPairs1, threeKinds1, houses1, fourKinds1, straights1, flushes1, sFlushes1, rFlushes1 = np.loadtxt('actuals.txt', delimiter = ',', unpack = True, skiprows = 2)
 
@@ -12,17 +9,17 @@ probs = [nones, pairs, twoPairs, threeKinds, houses, fourKinds, straights, flush
 probs1 = [nones1, pairs1, twoPairs1, threeKinds1, houses1, fourKinds1, straights1, flushes1, sFlushes1, rFlushes1]
 
 
-freq_tot = ncr(52,5)
-rFlush_th = 100*ncr(4,1)/freq_tot
-sFlush_th = 100*(ncr(10,1)*ncr(4,1)-ncr(4,1))/freq_tot
-fourKind_th = 100*ncr(13,1)*ncr(4,1)*ncr(12,1)/freq_tot
-fullHouse_th = 100*ncr(13,1)*ncr(4,3)*ncr(12,1)*ncr(4,2)/freq_tot
-flush_th = 100*(ncr(13,5)*ncr(4,1) - ncr(10,1)*ncr(4,1))/freq_tot
-straight_th = 100*(ncr(10,1)*(ncr(4,1)**5) - ncr(10,1)*ncr(4,1))/freq_tot
-threeKind_th = 100*ncr(13,1)*ncr(4,3)*ncr(12,2)*(ncr(4,1)**2)/freq_tot
-twoPair_th = 100*ncr(13,2)*(ncr(4,2)**2)*ncr(11,1)*ncr(4,1)/freq_tot
-pair_th = 100*ncr(13,1)*ncr(4,2)*ncr(12,3)*(ncr(4,1)**3)/freq_tot
-none_th = 100*((ncr(13,5) - 10)*((ncr(4,1)**5) - 4))/freq_tot
+freq_tot = comb(52,5)
+rFlush_th = 100*comb(4,1)/freq_tot
+sFlush_th = 100*(comb(10,1)*comb(4,1)-comb(4,1))/freq_tot
+fourKind_th = 100*comb(13,1)*comb(4,1)*comb(12,1)/freq_tot
+fullHouse_th = 100*comb(13,1)*comb(4,3)*comb(12,1)*comb(4,2)/freq_tot
+flush_th = 100*(comb(13,5)*comb(4,1) - comb(10,1)*comb(4,1))/freq_tot
+straight_th = 100*(comb(10,1)*(comb(4,1)**5) - comb(10,1)*comb(4,1))/freq_tot
+threeKind_th = 100*comb(13,1)*comb(4,3)*comb(12,2)*(comb(4,1)**2)/freq_tot
+twoPair_th = 100*comb(13,2)*(comb(4,2)**2)*comb(11,1)*comb(4,1)/freq_tot
+pair_th = 100*comb(13,1)*comb(4,2)*comb(12,3)*(comb(4,1)**3)/freq_tot
+none_th = 100*((comb(13,5) - 10)*((comb(4,1)**5) - 4))/freq_tot
 
 n = float(len(iters1))/100
 
