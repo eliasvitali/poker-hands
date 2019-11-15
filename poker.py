@@ -16,10 +16,6 @@ def init_deck():
 def is_ordered(ranks):
     return sorted(ranks) == list(range(min(ranks), max(ranks) + 1))
 
-def ncr(n, k):
-    return comb(n, k, exact = False)
-
-
 def is_royalFlush(hand):
     hand_ranks = [i[1] for i in hand]
     ranks_num = [rank_dict[hand_ranks[i]] for i in range(len(hand_ranks))]
@@ -111,17 +107,17 @@ num_twoPair = 0
 num_pair = 0
 num_none = 0
 
-freq_tot = ncr(52,5)
-rFlush_th = ncr(4,1)/freq_tot
-sFlush_th = (ncr(10,1)*ncr(4,1)-ncr(4,1))/freq_tot
-fourKind_th = ncr(13,1)*ncr(4,1)*ncr(12,1)/freq_tot
-fullHouse_th = ncr(13,1)*ncr(4,3)*ncr(12,1)*ncr(4,2)/freq_tot
-flush_th = (ncr(13,5)*ncr(4,1) - ncr(10,1)*ncr(4,1))/freq_tot
-straight_th = (ncr(10,1)*(ncr(4,1)**5) - ncr(10,1)*ncr(4,1))/freq_tot
-threeKind_th = ncr(13,1)*ncr(4,3)*ncr(12,2)*(ncr(4,1)**2)/freq_tot
-twoPair_th = ncr(13,2)*(ncr(4,2)**2)*ncr(11,1)*ncr(4,1)/freq_tot
-pair_th = ncr(13,1)*ncr(4,2)*ncr(12,3)*(ncr(4,1)**3)/freq_tot
-none_th = ((ncr(13,5) - 10)*((ncr(4,1)**5) - 4))/freq_tot
+freq_tot = comb(52,5)
+rFlush_th = comb(4,1)/freq_tot
+sFlush_th = (comb(10,1)*comb(4,1)-comb(4,1))/freq_tot
+fourKind_th = comb(13,1)*comb(4,1)*comb(12,1)/freq_tot
+fullHouse_th = comb(13,1)*comb(4,3)*comb(12,1)*comb(4,2)/freq_tot
+flush_th = (comb(13,5)*comb(4,1) - comb(10,1)*comb(4,1))/freq_tot
+straight_th = (comb(10,1)*(comb(4,1)**5) - comb(10,1)*comb(4,1))/freq_tot
+threeKind_th = comb(13,1)*comb(4,3)*comb(12,2)*(comb(4,1)**2)/freq_tot
+twoPair_th = comb(13,2)*(comb(4,2)**2)*comb(11,1)*comb(4,1)/freq_tot
+pair_th = comb(13,1)*comb(4,2)*comb(12,3)*(comb(4,1)**3)/freq_tot
+none_th = ((comb(13,5) - 10)*((comb(4,1)**5) - 4))/freq_tot
 
 n = 1e6
 iters = []
@@ -146,7 +142,7 @@ sFlushes_th = []
 rFlushes = []
 rFlushes_th = []
 
-start = time.clock()
+#start = time.get_clock_info('clock')
 
 for i in range(int(n)):
     
@@ -204,8 +200,8 @@ for i in range(int(n)):
     rFlushes.append(num_rFlush)
     rFlushes_th.append(float(i)*rFlush_th)
 
-end = time.clock()
-proc_t = end - start
+#end = time.get_clock_info('clock')
+#proc_t = end - start
 
 prob_rFlush = 100*num_rFlush/float(n)
 prob_sFlush = 100*num_sFlush/float(n)
@@ -218,7 +214,7 @@ prob_twoPair = 100*num_twoPair/float(n)
 prob_pair = 100*num_pair/float(n)
 prob_none = 100*num_none/float(n)
 
-print(f"Dealing {n} hands took {proc_t} seconds!")
+#print(f"Dealing {n} hands took {proc_t} seconds!")
 
 print(f"len(iters) = {len(iters)}")
 
